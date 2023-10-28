@@ -13,8 +13,14 @@ const checkUser = async(req,res,next) =>{
         next()
       }else{
         const user = await User.findById(decodedToken.userId)
-        res.locals.user = user
         
+        res.locals.user = user
+
+        req.user = {
+          ...decodedToken,
+          role: user.role,
+        };
+        // console.log("req.user.role",req.user.role)
         next()
         
       }
@@ -39,7 +45,9 @@ const authenticateToken = async (req, res, next) => {
           console.log(err.message)
           res.redirect("/login")
         }else{
+          
           next()
+          
         }
       })
     }else{
@@ -50,23 +58,18 @@ const authenticateToken = async (req, res, next) => {
         succeded: false,
         error: "Not authorized"
     })
-    
   }
-  
-  
 };
 
 
 
-const restrict = (role) =>{
-  return(req,res,next)=>{
+const authAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    next();
     
-    if(req.user.role !== role){
-      const error = new CustomError("No auth",403)
-      next(error)
-    }
-    next()
+  } else {
+    
+    res.sendStatus(403) // Admin yetkisi olmayanları reddet
   }
-  
-}
-export { authenticateToken , checkUser,restrict};
+};
+export { authenticateToken , checkUser,authAdmin};

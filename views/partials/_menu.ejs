@@ -14,7 +14,7 @@
                       <li><a class="<%= link === 'index' &&  'active' %>"   href="/">Home</a></li>
 
 
-                      <li><a class="<%= link === 'add_daily' &&  'active' %>"   href="/daily/add">Add Daily</a></li>
+                      
 
                       <li><a class="<%= link === 'daily' &&  'active' %>"   href="/daily">Daily</a></li>
 
@@ -30,7 +30,9 @@
                       <li><a class="<%= link === 'dashboard' && 'active' %>"   href="/users/dashboard">Dashboard</a></li>
 
                      
-                        <li><a  href="/logout">Logout</a></li>
+                     <li><a  href="/logout">Logout</a></li>
+
+                     <li><a class="<%= link === 'admin' && 'active' %>"   href="/admin">Admin</a></li>
                      <% } else { %> 
                         
                         <li><a class="<%= link === 'login' && 'active' %>"   href="/login">Login</a></li>

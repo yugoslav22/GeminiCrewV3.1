@@ -4,9 +4,11 @@ import * as authMiddleware from "../middlewares/authMiddleware.js"
 
 const getIndexPage = (req,res) => {
     
+
     res.render("index",{
         link: "index"
     })
+    
 }
 
 

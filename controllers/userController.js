@@ -34,6 +34,44 @@ const createUser = async (req,res) =>{
 
 
 
+// const loginUser = async (req,res) =>{
+//     try {
+        
+//         const {user_name, user_password} = req.body
+
+//         const user = await User.findOne({user_name})
+
+//         let same = false
+
+//         if(user){
+//             same = await bcrypt.compare(user_password, user.user_password)
+//         } else {
+//             return res.status(401).json({
+//                 succeded: false,
+//                 error:"There is no such user",
+//              })
+//         }
+
+//         if(same) {
+
+//             const token = jwt.sign({ id: user._id, role: user.role }, secretKey);
+//                 res.json({ token });
+//             res.redirect("/users/dashboard")
+//         } else{
+//             res.status(401).json({
+//                 succeded: false,
+//                 error:"Passwords are not matched.",
+//             })
+//         }
+
+//         } catch (error) {
+//             res.status(500).json({
+//                 succeded: false,
+//                 error,
+//              })
+//         }
+// }
+
 
 const loginUser = async (req,res) =>{
     try {
@@ -55,7 +93,7 @@ const loginUser = async (req,res) =>{
 
         if(same) {
 
-            const token= createToken(user._id)
+            const token= createToken(user._id, user.role)
             res.cookie("jwt",token,{
                 httpOnly:true,
                 maxAge:1000*60*60*24,
@@ -77,8 +115,8 @@ const loginUser = async (req,res) =>{
 }
 
 
-const createToken = (userId) =>{
-    return jwt.sign({userId},process.env.JWT_SECRET,{
+const createToken = (userId,role) =>{
+    return jwt.sign({userId,role},process.env.JWT_SECRET,{
         expiresIn:"1d",
     })
 }

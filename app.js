@@ -5,9 +5,11 @@ import pageRoute from "./routes/pageRoute.js"
 import photoRoute from "./routes/photoRoute.js"
 import dailyRoute from "./routes/dailyRoute.js"
 import userRoute from "./routes/userRoute.js"
+import adminRoute from "./routes/adminRoute.js"
 import cookieParser from "cookie-parser"
 import methodOverride from "method-override"
 import {checkUser } from "./middlewares/authMiddleware.js"
+// import {checkUser } from "./middlewares/authMiddleware2.js"
 import FileUpload from "express-fileupload"
 import {v2 as cloudinary} from "cloudinary"
 import fileUpload from "express-fileupload"
@@ -36,12 +38,27 @@ app.use(methodOverride("_method",{
     methods: ["POST","GET"],
 }))
 
+app.get('/set-user-cookie', (req, res) => {
+    // Kullanıcıya "user" tokeni atanıyor
+    res.cookie('token', userToken);
+    res.send('User token oluşturuldu ve cookie\'ye kaydedildi.');
+  });
+  
+app.get('/set-admin-cookie', (req, res) => {
+    // Kullanıcıya "admin" tokeni atanıyor
+    res.cookie('token', adminToken);
+    res.send('Admin token oluşturuldu ve cookie\'ye kaydedildi.');
+});
+
+
+
 
 app.use("*",checkUser)
 app.use("/",pageRoute)
 app.use("/photos",photoRoute)
 app.use("/users",userRoute)
 app.use("/daily",dailyRoute)
+app.use("/admin",adminRoute)
 
 
 
